@@ -1,0 +1,101 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
+class GRAPH
+{
+	int nov;	//No of vertices
+	vector<int> *myContainer;	//Adjancency List to Store edges
+
+	public:
+		GRAPH(int v)	//Constructor
+	{
+		nov = v;
+		myContainer = new vector < int>[nov];
+
+	}
+
+	void AddEdge(int i, int el)	//Function to Add Edge b/n vertices
+	{
+		myContainer[i].push_back(el);
+	}
+
+	void BFS(int source)	//Breadth First Search
+	{
+		queue<int> q;	//Queue to explore vertices
+		bool Visited[nov] = { 0 };	//To kept record of already Visited vertices
+
+		Visited[source] = 1;	//Source is root of tree we will make using BFS
+		q.push(source);
+
+		vector<int>::iterator it;
+
+		while (!q.empty())
+		{
+			int i = q.front();
+			cout << i << "  ";
+			q.pop();
+
+			/*
+			   To Traverse the all the adjacent vertices of source vertex
+			   if the vertex is already visited it will not be added to queue else it will be
+
+			*/
+			for (it = myContainer[i].begin(); it != myContainer[i].end(); ++it)
+			{
+				if (!Visited[*it])
+				{
+					Visited[*it] = true;
+					q.push(*it);
+				}
+			}
+		}
+	}
+};
+
+// Main Func
+int main()
+
+{
+	//instance of Graph
+	GRAPH g(11);
+
+	//Adding Edges
+	g.AddEdge(1, 2);
+	g.AddEdge(1, 4);
+
+	g.AddEdge(2, 1);
+	g.AddEdge(2, 3);
+	g.AddEdge(2, 8);
+	g.AddEdge(2, 7);
+	g.AddEdge(2, 5);
+
+	g.AddEdge(3, 10);
+	g.AddEdge(3, 9);
+	g.AddEdge(3, 2);
+	g.AddEdge(3, 4);
+
+	g.AddEdge(4, 1);
+	g.AddEdge(4, 3);
+
+	g.AddEdge(5, 6);
+	g.AddEdge(5, 7);
+	g.AddEdge(5, 2);
+	g.AddEdge(5, 8);
+
+	g.AddEdge(6, 5);
+
+	g.AddEdge(7, 2);
+	g.AddEdge(7, 8);
+	g.AddEdge(7, 5);
+
+	g.AddEdge(8, 2);
+	g.AddEdge(8, 5);
+	g.AddEdge(8, 7);
+
+	cout << "BFS Of Your Tree is with source as 1 is: ";
+	g.BFS(1);
+
+	return 0;
+}

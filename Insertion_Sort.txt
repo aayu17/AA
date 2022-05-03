@@ -1,0 +1,127 @@
+#include <iostream>
+#include <fstream>
+#include <algorithm>
+using namespace std;
+
+// Insertion Sort Function
+int insertion_sort(int arr[], int len)
+{
+    int key = 0, j = 0, temp = 0, s = 0;
+    for (int i = 1; i < len; i++)
+    {
+        key = arr[i];
+        j = i - 1;
+
+        while (j >= 0 && (s = s + 1) && arr[j] > key)
+        {
+
+            temp = arr[j];
+            arr[j] = arr[j + 1];
+
+            arr[j + 1] = temp;
+            j--;
+        }
+    }
+    return s;
+}
+
+// function to generate random array
+void generate_random_array(int Arr[], int size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        Arr[i] = rand() % 1000;
+    }
+}
+
+// Best Case insertion
+void insertion_best_case(int num_cases = 20, int min_size = 30, int max_size = 500)
+{
+    fstream fout;
+    int interval = (max_size - min_size) / num_cases;
+    for (int size = min_size, i = 0; i < num_cases; i++, size += interval)
+    {
+        int *Arr = new int[size];
+        generate_random_array(Arr, size);
+        // sort the array
+        sort(Arr, Arr + size);
+        // cout << size << "\t";
+        // cout << insertion_sort(Arr, size) << endl;
+        fout.open("Best_case.csv", ios::out | ios::app);
+        fout << size << "," << insertion_sort(Arr, size) << endl;
+    }
+}
+
+// Worst case insertion
+void insertion_worst_case(int num_cases = 20, int min_size = 30, int max_size = 500)
+{
+    fstream fout;
+    int interval = (max_size - min_size) / num_cases;
+    for (int size = min_size, i = 0; i < num_cases; i++, size += interval)
+    {
+        int *Arr = new int[size];
+        generate_random_array(Arr, size);
+        // sort the array
+        sort(Arr, Arr + size, greater<int>());
+        // cout << size << "\t";
+        // cout << insertion_sort(Arr, size) << endl;
+        fout.open("Worst_case.csv", ios::out | ios::app);
+        fout << size << "," << insertion_sort(Arr, size) << endl;
+    }
+}
+
+// Average case insertion
+void insertion_avg_case(int num_cases = 61, int min_size = 30, int max_size = 1000)
+{
+    fstream fout;
+    int interval = (max_size - min_size) / num_cases;
+    for (int size = min_size, i = 0; i < num_cases; i++, size += interval)
+    {
+
+        int *Arr = new int[size];
+        generate_random_array(Arr, size);
+        // cout << size << "\t";
+        // cout << insertion_sort(Arr, size) << endl;
+        fout.open("Avg_case.csv", ios::out | ios::app);
+        fout << size << "," << insertion_sort(Arr, size) << endl;
+    }
+}
+
+// Main Function (Driver Code)
+int main()
+{
+
+    int choice;
+    do
+    {
+        cout << "\n====================================================\n";
+        cout << "*********WELCOME TO INSERTION SORT PROGRAM**********";
+        cout << "\n====================================================\n";
+        cout << "(1) Best case\n";
+        cout << "(2) Average case\n";
+        cout << "(3) Worst case\n";
+        cout << "(4) Exit()\n";
+        cout << "Enter choice : ";
+        cin >> choice;
+        switch (choice)
+        {
+        case 1:
+            insertion_best_case();
+            break;
+        case 2:
+            insertion_avg_case();
+            break;
+        case 3:
+            insertion_worst_case();
+            break;
+        case 4:
+            cout << "\n THANK YOU !!\n";
+            break;
+        default:
+            cout << "\nINVALID CHOICE !!\n";
+            break;
+        }
+
+    } while (choice != 4);
+    return 0;
+}

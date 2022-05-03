@@ -1,0 +1,97 @@
+#include<iostream>
+#include<stdlib.h>
+#include<algorithm>
+#include<fstream>
+using namespace std;
+
+int count = 0;
+
+int Partition(int arr[], int start, int end) 
+{ 
+
+    int pivot = arr[end]; 
+    int i = (start - 1); 
+  
+    for (int j = start; j <= end - 1; j++) 
+    { 
+        ::count++;
+        if (arr[j] <= pivot) 
+        { 
+            i++; 
+            swap(arr[i], arr[j]);
+			
+        } 
+        
+    } 
+    swap(arr[i + 1], arr[end]); 
+    
+	return (i + 1);
+    
+} 
+
+void quickSort(int arr[], int start, int end) 
+{ 
+
+    if (start < end) 
+    { 
+        
+        int pivot = Partition(arr, start, end); 
+       
+        quickSort(arr, start, pivot - 1); 
+        quickSort(arr, pivot + 1, end);   
+    } 
+    
+} 
+void Data(int comparison,int size,string type)
+{
+	fstream fout1,fout2;
+	
+	fout1.open("QuickAverage.csv",ios::out|ios::app);
+	fout2.open("QuickWorst.csv",ios::out|ios::app);
+	
+	if(type == "AverageCase")
+	{
+		fout1<<size<<","<<comparison<<"\n";
+	}
+	else
+	{
+		fout2<<size<<","<<comparison<<"\n";		
+	}
+	fout1.close();
+	fout2.close();
+	
+}
+void Array_generation(int cases,string type)
+{
+	int size = 30;
+	
+	for(int i = 0; i < cases; i++)
+	{
+		int *arr = new int[size]();
+		for(int j = 0; j < size; j++)
+		{
+			arr[j] = rand()%1000;
+		}
+		
+		if(type == "WorstCase")
+		{
+			if(size<1000/2)
+            	sort(arr, arr + size, greater<int>());
+        	else
+            	sort(arr, arr+size);
+		}
+		
+		::count = 0;
+		quickSort(arr,0,size-1);
+		Data(::count,size,type);
+		
+		size += (970)/cases;
+	}	
+}
+
+int main() {
+	Array_generation(40,"WorstCase");
+	Array_generation(60,"AverageCase");
+	
+	return 0;
+}

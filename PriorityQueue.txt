@@ -1,0 +1,119 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+// function to print priority queue
+void PRINT(int arr[], int size)
+{
+    cout << endl;
+    for (int i = 0; i < size; i++)
+        cout << arr[i] << "  ";
+    cout << endl;
+}
+
+// MAX_HEAPIFY FUNCTION
+void HeapifyIt(int arr[], int n, int i)
+{
+    int largest = i;
+
+    int l = i * 2 + 1;   // left child
+    int r = (i * 2) + 2; // right child
+
+    if (l < n && (arr[l] > arr[largest]))
+    {
+        largest = l;
+    }
+
+    if (r < n && (arr[r] > arr[largest]))
+    {
+        largest = r;
+    }
+
+    if (largest != i) // if largest is not the same
+    {
+        swap(arr[i], arr[largest]); // Inbuilt swap func
+        HeapifyIt(arr, n, largest); // call again for smaller tree
+    }
+}
+
+// function to find proper place for newly increased key
+void INCREASE_VAL(int arr[], int key, int size)
+{
+    if (key < arr[size])
+        cout << "can't insert";
+    else
+    {
+        arr[size] = key;
+        while (size > 0 and arr[size] > arr[(size - 1) / 2])
+        {
+            swap(arr[size], arr[(size - 1) / 2]);
+            size = (size - 1) / 2;
+        }
+    }
+}
+
+// function to get max priority
+int GET_MAXIMUM(int arr[])
+{
+    return arr[0];
+}
+
+// function to extract key according to priority
+void EXTRACT_MAX(int arr[], int &size)
+{
+    if (size == 0)
+        cout << "QUEUE IS EMPTY" << endl;
+
+    else
+    {
+        swap(arr[0], arr[size - 1]);
+        size--;
+
+        HeapifyIt(arr, size, 0);
+    }
+}
+
+// function to insert priority key
+void MAX_INSERT(int arr[], int &size)
+{
+    int key = 0;
+    size++;
+    arr[size] = -1; // Assuming that priority is always > 0
+    cout << "Enter the priority : ";
+    cin >> key;
+    INCREASE_VAL(arr, key, size);
+}
+
+// function to get elements size
+int GET_NO_OF_ELEMENTS()
+{
+    cout << "Enter how many elements you want to insert in the priority queue : ";
+    int el;
+    cin >> el;
+    return el;
+}
+
+// Main function(Driver Code)
+int main()
+{
+    int arr[10000];
+    int size = -1;
+    int elements_size = GET_NO_OF_ELEMENTS();
+
+    cout << "\nWARNING : ENTER KEY PRIORITY >=0 ALWAYS\n";
+    for (int i = 1; i <= elements_size; i++)
+        MAX_INSERT(arr, size);
+
+    cout << "\nBEFORE SORTING\n";
+    PRINT(arr, elements_size);
+
+    int len = size + 1;
+
+    for (int i = 1; i <= elements_size; i++)
+        EXTRACT_MAX(arr, len);
+
+    cout << "\nAFTER SORTING\n";
+    PRINT(arr, elements_size);
+
+    return 0;
+}
